@@ -1,5 +1,7 @@
 ﻿using FieldCoreAPI.Models;
+using FieldCoreAPI.Models.Dtos;
 using FieldCoreAPI.Repositories.Interfaces;
+using FieldCoreAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +20,9 @@ namespace FieldCoreAPI.Controllers
         }
 
         [HttpGet]
-        public async  Task<ActionResult<List<UserModel>>> ListAllUsers()
+        public async  Task<ActionResult<List<UserDto>>> ListAllUsers()
         {
-            List<UserModel> users = await _userRepository.GetAll();
+            List<UserDto> users = await _userRepository.GetAll();           
             return Ok(users);
 
         }

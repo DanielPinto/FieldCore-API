@@ -1,5 +1,6 @@
 ﻿using FieldCoreAPI.Datas;
 using FieldCoreAPI.Models;
+using FieldCoreAPI.Models.Dtos;
 using FieldCoreAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,17 +16,33 @@ namespace FieldCoreAPI.Repositories
             _dbContext = fieldCoreAPIDBContext;
         }
 
-        public async Task<List<UserModel>> GetAll() => await _dbContext.Users.
+        public async Task<List<UserDto>> GetAll()
+        {
+            List<UserModel> users = await _dbContext.Users.
                 Include(x => x.Unidades)
                 .ToListAsync();
-        
 
-        public async Task<UserModel> GetById(int id)
-        {
-            return await _dbContext.Users.
-                Include(x=>x.Unidades)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            List<UserDto> userDtos = new();
+
+            foreach (var user in users) {
+
+                userDtos.Add(
+                    new UserDto
+                    {
+                        Email = user.Email,
+                        Id = user.Id,
+                        Id_Corporate = user.Id_Corporate,
+                        Name = user.Name,
+                        Unidades = user.Unidades,
+                    });
+            }
+
+            return userDtos;
         }
+
+        public async Task<UserModel> GetById(int id) => await _dbContext.Users.
+                Include(x => x.Unidades)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<UserModel> Add(UserModel user)
         {
@@ -75,6 +92,13 @@ namespace FieldCoreAPI.Repositories
 
             throw new Exception($"User ID: {id} not found.");
 
+
+        }
+
+        public async Task<UserModel> Auth(string email, string password)
+        {
+
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
 
         }
     }

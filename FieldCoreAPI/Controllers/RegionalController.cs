@@ -1,5 +1,6 @@
 ﻿using FieldCoreAPI.Models;
 using FieldCoreAPI.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,8 @@ namespace FieldCoreAPI.Controllers
             
         }
 
-        [HttpGet]
+
+        [HttpGet, Authorize]
         public async  Task<ActionResult<List<RegionalModel>>> GetAll()
         {
             List<RegionalModel> list = await _repository.GetAll();

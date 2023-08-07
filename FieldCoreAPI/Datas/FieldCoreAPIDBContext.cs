@@ -1,5 +1,6 @@
 ﻿using FieldCoreAPI.Datas.Maps;
 using FieldCoreAPI.Models;
+using FieldCoreAPI.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
@@ -10,6 +11,7 @@ namespace FieldCoreAPI.Datas
         public FieldCoreAPIDBContext(DbContextOptions<FieldCoreAPIDBContext> options):base(options) { }
         
         public DbSet<UserModel>? Users { get; set; }
+
         public DbSet<UnidadeModel>? Unidades { get; set; }
 
         public DbSet<RegionalModel>? Regionais { get; set; }
@@ -23,6 +25,9 @@ namespace FieldCoreAPI.Datas
             modelBuilder.ApplyConfiguration(new RegionalMap());
 
             base.OnModelCreating(modelBuilder);
+            
         }
+
+        
     }
 }
